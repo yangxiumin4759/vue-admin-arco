@@ -47,29 +47,66 @@ const useAppStore = defineStore('app', {
     async fetchServerMenuConfig() {
       let notifyInstance: NotificationReturn | null = null
       try {
+        // 检查本地缓存
+        const cachedData = this.getCachedMenuData()
+        if (cachedData) {
+          this.serverMenu = cachedData
+          return
+        }
+
         notifyInstance = Notification.info({
-          id: 'menuNotice', // Keep the instance id the same
-          content: 'loading',
+          id: 'menuNotice',
+          content: '正在加载菜单...',
           closable: true,
         })
+        
         const { data } = await getMenuList()
         this.serverMenu = data
+        
         notifyInstance = Notification.success({
           id: 'menuNotice',
-          content: 'success',
+          content: '菜单加载成功',
           closable: true,
         })
       } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         notifyInstance = Notification.error({
           id: 'menuNotice',
-          content: 'error',
+          content: '菜单加载失败',
           closable: true,
         })
       }
     },
+    
+    // 获取缓存的菜单数据
+    getCachedMenuData() {
+      try {
+        const cached = localStorage.getItem('cached-menu-data')
+        if (cached) {
+          const { data, timestamp, role } = JSON.parse(cached)
+          const currentRole = localStorage.getItem('userRole')
+          
+          // 检查缓存是否过期（1小时）和角色是否匹配
+          const isExpired = Date.now() - timestamp > 60 * 60 * 1000
+          const roleChanged = role !== currentRole
+          
+          if (!isExpired && !roleChanged) {
+            return data
+          } else {
+            // 清除过期或角色不匹配的缓存
+            localStorage.removeItem('cached-menu-data')
+          }
+        }
+      } catch (error) {
+        console.error('获取缓存菜单数据失败:', error)
+        localStorage.removeItem('cached-menu-data')
+      }
+      return null
+    },
+    
     clearServerMenu() {
       this.serverMenu = []
+      // 清除菜单缓存
+      localStorage.removeItem('cached-menu-data')
     },
   },
 })

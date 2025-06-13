@@ -63,131 +63,13 @@ setupMock({
       return successResponseWrap(null)
     })
 
-    // 用户的服务端菜单
+    // 用户的服务端菜单 - 从菜单管理系统获取
     Mock.mock(new RegExp('/api/user/menu'), () => {
       const role = window.localStorage.getItem('userRole') || 'admin'
       
-      // 基础菜单
-      const baseMenuList = [
-        {
-          path: '/dashboard',
-          name: 'dashboard',
-          meta: {
-            locale: 'menu.server.dashboard',
-            requiresAuth: true,
-            icon: 'icon-dashboard',
-            order: 1,
-          },
-          children: [
-            {
-              path: 'workplace',
-              name: 'Workplace',
-              meta: {
-                locale: 'menu.server.workplace',
-                requiresAuth: true,
-                roles: ['*'],
-              },
-            },
-            {
-              path: 'monitor',
-              name: 'Monitor',
-              meta: {
-                locale: 'menu.dashboard.monitor',
-                requiresAuth: true,
-                roles: ['admin'],
-              },
-            },
-          ],
-        },
-        {
-          path: '/list',
-          name: 'list',
-          meta: {
-            locale: 'menu.list',
-            requiresAuth: true,
-            icon: 'icon-list',
-            order: 2,
-          },
-          children: [
-            {
-              path: 'search-table',
-              name: 'SearchTable',
-              meta: {
-                locale: 'menu.list.searchTable',
-                requiresAuth: true,
-                roles: ['*'],
-              },
-            },
-            {
-              path: 'card',
-              name: 'Card',
-              meta: {
-                locale: 'menu.list.cardList',
-                requiresAuth: true,
-                roles: ['*'],
-              },
-            },
-          ],
-        },
-      ]
-
-      // 系统管理菜单（仅管理员可见）
-      const systemMenu = {
-        path: '/system',
-        name: 'system',
-        meta: {
-          locale: 'menu.system',
-          requiresAuth: true,
-          icon: 'icon-settings',
-          order: 10,
-          roles: ['admin'],
-        },
-        children: [
-          {
-            path: 'admin',
-            name: 'AdminManagement',
-            meta: {
-              locale: 'menu.system.admin',
-              requiresAuth: true,
-              roles: ['admin'],
-            },
-          },
-          {
-            path: 'role',
-            name: 'RoleManagement',
-            meta: {
-              locale: 'menu.system.role',
-              requiresAuth: true,
-              roles: ['admin'],
-            },
-          },
-          {
-            path: 'permission',
-            name: 'PermissionManagement',
-            meta: {
-              locale: 'menu.system.permission',
-              requiresAuth: true,
-              roles: ['admin'],
-            },
-          },
-          {
-            path: 'menu',
-            name: 'MenuManagement',
-            meta: {
-              locale: 'menu.system.menu',
-              requiresAuth: true,
-              roles: ['admin'],
-            },
-          },
-        ],
-      }
-
-      let menuList = [...baseMenuList]
-      
-      // 如果是管理员，添加系统管理菜单
-      if (role === 'admin') {
-        menuList.push(systemMenu)
-      }
+      // 这里直接返回空数组，因为菜单数据现在由菜单管理系统提供
+      // 实际的菜单数据通过 /api/menu/routes 接口获取
+      const menuList = []
 
       // 缓存菜单数据到本地存储
       localStorage.setItem('cached-menu-data', JSON.stringify({

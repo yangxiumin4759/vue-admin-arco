@@ -45,6 +45,7 @@ export default {
   'menu.system.role': 'Role Management',
   'menu.system.permission': 'Permission Management',
   'menu.system.menu': 'Menu Management',
+  'menu.system.department': 'Department Management',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': 'FAQ',
   'navbar.docs': 'Docs',

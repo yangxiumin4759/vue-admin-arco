@@ -45,6 +45,7 @@ export default {
   'menu.system.role': '角色管理',
   'menu.system.permission': '权限管理',
   'menu.system.menu': '菜单管理',
+  'menu.system.department': '部门管理',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': '常见问题',
   'navbar.docs': '文档中心',

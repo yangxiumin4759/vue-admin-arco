@@ -33,7 +33,7 @@ export default function setupPermissionGuard(router: Router) {
                 const routeConfig: any = {
                   path: route.path,
                   name: route.name,
-                  component: () => import(`@${route.component}`),
+                  component: () => import(/* @vite-ignore */ `@${route.component}`),
                   meta: route.meta || {}
                 }
                 
@@ -54,7 +54,7 @@ export default function setupPermissionGuard(router: Router) {
                       {
                         path: '',
                         name: route.name,
-                        component: () => import(`@${route.component}`),
+                        component: () => import(/* @vite-ignore */ `@${route.component}`),
                         meta: route.meta || {}
                       }
                     ]
